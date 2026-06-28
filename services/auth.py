@@ -14,8 +14,7 @@ def check_auth():
     token = query_params.get("token")
     
     if not token:
-        # MODO DESENVOLVEDOR: Usar token falso se não houver
-        token = 'admin-token'
+        return False
         
     try:
         # Tenta decodificar o token com a chave secreta. 
