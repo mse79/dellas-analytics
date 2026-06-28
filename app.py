@@ -5,6 +5,18 @@ from utils.config import APP_NAME
 # Configuração global da página
 st.set_page_config(page_title=APP_NAME, layout="wide", initial_sidebar_state="expanded")
 
+# Ocultar elementos do Streamlit Cloud (Manage app, header, footer)
+st.markdown("""
+<style>
+    [data-testid="stToolbar"] {display: none !important;}
+    [data-testid="stToolbarActions"] {display: none !important;}
+    .stDeployButton {display: none !important;}
+    #MainMenu {visibility: hidden !important;}
+    header {visibility: hidden !important;}
+    footer {visibility: hidden !important;}
+</style>
+""", unsafe_allow_html=True)
+
 # Verificação de Autenticação
 if not check_auth():
     st.title("🔒 Acesso Restrito")
