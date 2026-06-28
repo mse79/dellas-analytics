@@ -11,7 +11,11 @@ def check_auth():
 
     # No Streamlit Cloud (secrets do Firebase configurados), autenticar automaticamente.
     # O controle de acesso público/privado é gerenciado pelo Streamlit Cloud.
-    if "firebase" in st.secrets:
+    try:
+        on_cloud = "firebase" in st.secrets
+    except Exception:
+        on_cloud = False
+    if on_cloud:
         st.session_state["authenticated"] = True
         st.session_state["user_data"] = {"role": "admin", "name": "Admin"}
         return True
