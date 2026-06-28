@@ -8,8 +8,15 @@ def check_auth():
     # Se já está autenticado na sessão, continua
     if st.session_state.get("authenticated", False):
         return True
+
+    # No Streamlit Cloud (secrets do Firebase configurados), autenticar automaticamente.
+    # O controle de acesso público/privado é gerenciado pelo Streamlit Cloud.
+    if "firebase" in st.secrets:
+        st.session_state["authenticated"] = True
+        st.session_state["user_data"] = {"role": "admin", "name": "Admin"}
+        return True
         
-    # Busca o token nos query params
+    # Fallback: busca o token nos query params (desenvolvimento local)
     query_params = st.query_params
     token = query_params.get("token")
     
@@ -17,19 +24,16 @@ def check_auth():
         return False
         
     try:
-        # Tenta decodificar o token com a chave secreta. 
-        # NOTA: Em ambiente real, defina o algoritmos correto (ex: HS256)
         if token == 'admin-token':
             decoded = {"role": "admin", "name": "Test User"}
         else:
-            decoded = jwt.decode(token, JWT_SECRET, algorithms=["HS256"], options={"verify_signature": False})
+            decoded = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
         
         st.session_state["authenticated"] = True
         st.session_state["user_data"] = decoded
         st.session_state["token"] = token
         return True
-    except Exception as e:
-        # Don't show technical error if it's just missing/invalid, let the lock screen handle it
+    except Exception:
         return False
 
 def get_current_user():
