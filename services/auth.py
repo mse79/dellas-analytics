@@ -20,8 +20,7 @@ def check_auth():
     col_left, col_center, col_right = st.columns([1, 2, 1])
     with col_center:
         st.markdown("<br><br>", unsafe_allow_html=True)
-        st.image("assets/images/logodellas.png", use_column_width=True)
-        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("## 🛒 Dellas")
         st.subheader("🔒 Painel Analytics")
         st.caption("Área restrita — somente administradores.")
 
